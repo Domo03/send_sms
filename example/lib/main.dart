@@ -62,6 +62,8 @@ class _HomePageState extends State<HomePage> {
           ElevatedButton(
             onPressed: () async {
               try {
+                await SmsSender.checkSms();
+
                 final simCards = await SmsSender.getSimCards();
                 print(simCards);
                 if (context.mounted) {
@@ -108,7 +110,7 @@ class SimCardDialog extends StatefulWidget {
 }
 
 class _SimCardDialogState extends State<SimCardDialog> {
-  String selectedSimCard = "0";
+  int? selectedSimCard;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -120,13 +122,23 @@ class _SimCardDialogState extends State<SimCardDialog> {
             RadioListTile<int>(
                 title: Text(sim["displayName"]),
                 value: sim["simSlotIndex"],
-                groupValue: int.parse(selectedSimCard),
+                groupValue: selectedSimCard,
                 onChanged: (int? value) {
-                  Navigator.of(context).pop(value);
+                  setState(() {
+                    selectedSimCard = value ?? 0;
+                  });
                 }),
           ],
         ],
       ),
+      actions: [
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop(selectedSimCard);
+          },
+          child: Text("Confirm"),
+        ),
+      ],
     );
   }
 }
