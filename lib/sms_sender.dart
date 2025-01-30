@@ -61,4 +61,24 @@ class SmsSender {
       throw Exception("${e.message}");
     }
   }
+
+  static Future<void> checkSms() async {
+    // Check and request SMS permission
+    var status = await Permission.sms.status;
+    if (!status.isGranted) {
+      status = await Permission.sms.request();
+      if (!status.isGranted) {
+        throw Exception("SMS permission denied");
+      }
+    }
+
+    // Check and request phone state permission (for SIM card info)
+    status = await Permission.phone.status;
+    if (!status.isGranted) {
+      status = await Permission.phone.request();
+      if (!status.isGranted) {
+        throw Exception("Phone permission denied");
+      }
+    }
+  }
 }
