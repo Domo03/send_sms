@@ -1,6 +1,6 @@
 name: sms_sender
-description: "A new Flutter plugin project."
-version: 0.0.1
+description: "SMS run in backward"
+version: 1.0.0
 homepage:
 
 environment:
