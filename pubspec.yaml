@@ -1,6 +1,6 @@
 name: sms_sender
 description: "SMS run in backward"
-version: 1.0.0
+version: 1.0.1
 homepage:
 
 environment:
