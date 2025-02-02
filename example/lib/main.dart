@@ -69,6 +69,7 @@ class _HomePageState extends State<HomePage> {
                 if (context.mounted) {
                   final simSlot = await showDialog<int>(
                       context: context,
+                      barrierDismissible: false,
                       builder: (BuildContext dialogContext) {
                         return SimCardDialog(
                           simCards: simCards,
@@ -84,9 +85,36 @@ class _HomePageState extends State<HomePage> {
                     messageController.text,
                     simSlot: simSlot,
                   );
+
+                  final snackBar = SnackBar(
+                    backgroundColor: Colors.green[400],
+                    content: Text(
+                      "SMS message sent.",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
                 }
               } on Exception catch (e) {
-                print(e);
+                String errorMessage = e.toString();
+
+                final snackBar = SnackBar(
+                  backgroundColor: Colors.red[400],
+                  content: Text(
+                    errorMessage,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
               }
             },
             child: Text("Send SMS"),
